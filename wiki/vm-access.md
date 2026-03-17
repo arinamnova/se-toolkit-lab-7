@@ -244,7 +244,7 @@ Complete these steps:
 
    2. Type `yes` and press `Enter`.
 
-4. After a successful login, you should see the [shell prompt](./shell.md#shell-prompt):
+4. After a successful login, you should see this [`SSH` shell prompt](./ssh.md#ssh-shell-prompt):
 
    ```terminal
    root@<your-vm-name><vm-index>:~#
@@ -453,7 +453,7 @@ Complete these steps:
 
 4. To confirm you are logged in as the user `<user>`,
    not [the user `root`](./linux.md#the-user-root),
-   look at the [shell prompt](./shell.md#ssh-shell-prompt).
+   look at the [shell prompt](./ssh.md#ssh-shell-prompt).
 
    You should see:
 
