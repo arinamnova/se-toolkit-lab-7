@@ -7,7 +7,7 @@
   - [The user `root`](#the-user-root)
   - [A non-root user](#a-non-root-user)
 - [Group](#group)
-  - [`sudo` group](#sudo-group)
+  - [The group `sudo`](#the-group-sudo)
 - [Permissions](#permissions)
   - [Owner](#owner)
   - [Mode](#mode)
@@ -41,11 +41,11 @@ To perform administrative actions, a non-root user must use the [`sudo` command]
 
 See [Group](./operating-system.md#group).
 
-### `sudo` group
+### The group `sudo`
 
-The `sudo` [group](#group) is a special group on `Ubuntu`/`Debian` systems whose members are allowed to run commands with elevated [permissions](#permissions) using the [`sudo` command](./linux-administration.md#the-sudo-command).
+The [group](#group) `sudo` is a special group on `Ubuntu`/`Debian` systems whose members are allowed to run commands with elevated [permissions](#permissions) using the [`sudo` command](./linux-administration.md#the-sudo-command).
 
-Adding a [user](#user) to the `sudo` group grants them administrator access without using [the user `root`](#the-user-root) directly.
+Adding a [user](#user) to the group `sudo` grants them administrator access without using [the user `root`](#the-user-root) directly.
 
 ## Permissions
 

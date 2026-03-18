@@ -315,7 +315,7 @@ Complete these steps:
    info: Adding user `<user>' to group `users' ...
    ```
 
-5. To add the user `<user>` to the [`sudo` group](./linux.md#sudo-group),
+1. To add the user `<user>` to the [group `sudo`](./linux.md#the-group-sudo),
 
    [run in the `VS Code Terminal`](./vs-code.md#run-a-command-in-the-vs-code-terminal):
 
@@ -325,7 +325,7 @@ Complete these steps:
 
    There should be no output.
 
-6. To check that the user `<user>` was added to the `sudo` group,
+2. To check that the user `<user>` was added to the group `sudo`,
 
    [run in the `VS Code Terminal`](./vs-code.md#run-a-command-in-the-vs-code-terminal):
 
