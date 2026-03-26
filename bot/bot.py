@@ -2,7 +2,7 @@
 """LMS Telegram Bot entry point.
 
 Supports two modes:
-- Test mode: uv run bot.py --test "/command" - prints handler response to stdout
+- Test mode: uv run bot.py --test "/command" or uv run bot.py --test "natural language query"
 - Telegram mode: uv run bot.py - starts Telegram polling
 """
 
@@ -20,6 +20,7 @@ from handlers import (
     handle_labs,
     handle_scores,
 )
+from handlers.intent import route as route_intent
 
 
 # Command registry: maps command strings to handler functions
@@ -32,30 +33,36 @@ COMMANDS = {
 }
 
 
-def run_test_mode(command: str) -> None:
-    """Run a command in test mode and print the result to stdout.
+def run_test_mode(query: str) -> None:
+    """Run a command or natural language query in test mode.
 
     Args:
-        command: The command to run (e.g., "/start", "/help", "/scores lab-04")
+        query: The command or natural language query (e.g., "/start" or "what labs are available")
     """
-    # Parse command and arguments
-    parts = command.strip().split()
-    cmd = parts[0].lower()
-    args = parts[1:] if len(parts) > 1 else []
+    query = query.strip()
 
-    if cmd not in COMMANDS:
-        print(f"Unknown command: {cmd}")
-        print(f"Available commands: {', '.join(COMMANDS.keys())}")
-        sys.exit(0)
+    # Check if it's a slash command
+    if query.startswith("/"):
+        parts = query.split()
+        cmd = parts[0].lower()
+        args = parts[1:] if len(parts) > 1 else []
 
-    # Call the handler
-    handler = COMMANDS[cmd]
+        if cmd not in COMMANDS:
+            print(f"Unknown command: {cmd}")
+            print(f"Available commands: {', '.join(COMMANDS.keys())}")
+            sys.exit(0)
 
-    # Handle commands with arguments
-    if cmd == "/scores" and args:
-        response = handler(args[0])
+        # Call the handler
+        handler = COMMANDS[cmd]
+
+        # Handle commands with arguments
+        if cmd == "/scores" and args:
+            response = handler(args[0])
+        else:
+            response = handler()
     else:
-        response = handler()
+        # Natural language query - route through LLM
+        response = route_intent(query)
 
     # Print response to stdout (for autochecker verification)
     print(response)
