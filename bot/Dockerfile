@@ -51,5 +51,6 @@ USER nonroot
 
 WORKDIR /app
 
-# Run the bot
+# Run the bot (Telegram mode by default)
+# For test mode: docker run <image> --test "/start"
 CMD ["python", "bot/bot.py"]
