@@ -5,6 +5,9 @@ services:
       dockerfile: backend/Dockerfile
       args:
         REGISTRY_PREFIX: ${REGISTRY_PREFIX:-harbor.pg.innopolis.university/docker-hub-cache/}
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
     restart: unless-stopped
     networks:
       - lms-network
@@ -76,6 +79,9 @@ services:
       context: frontend/
       args:
         REGISTRY_PREFIX: ${REGISTRY_PREFIX:-harbor.pg.innopolis.university/docker-hub-cache/}
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
     networks:
       - lms-network
     depends_on:
@@ -94,5 +100,5 @@ volumes:
 
 networks:
   lms-network:
-    name: lms-network
+    name: lms-network-lab-7
     attachable: true
