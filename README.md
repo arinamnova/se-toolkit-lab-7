@@ -91,3 +91,71 @@ By the end of this lab, you should be able to say:
 2. [Backend Integration](./lab/tasks/required/task-2.md) — P0: slash commands + real data
 3. [Intent-Based Natural Language Routing](./lab/tasks/required/task-3.md) — P1: LLM tool use
 4. [Containerize and Document](./lab/tasks/required/task-4.md) — P3: containerize + deploy
+
+## Deploy
+
+### Prerequisites
+
+Before deploying, ensure you have the following environment variables set in `.env.docker.secret`:
+
+- `BOT_TOKEN` — Your Telegram bot token from @BotFather
+- `LMS_API_KEY` — API key for the LMS backend
+- `LLM_API_KEY` — API key for the LLM service
+- `LLM_API_BASE_URL` — LLM API base URL (use `http://host.docker.internal:42005` for local Qwen proxy)
+
+### Deploy Commands
+
+1. **Stop any running bot process** (if running as background process):
+
+   ```bash
+   pkill -f "bot.py" 2>/dev/null
+   ```
+
+2. **Build and start all services**:
+
+   ```bash
+   cd ~/se-toolkit-lab-7
+   docker compose --env-file .env.docker.secret up --build -d
+   ```
+
+3. **Verify services are running**:
+
+   ```bash
+   docker compose --env-file .env.docker.secret ps
+   ```
+
+   You should see `bot`, `backend`, `postgres`, `caddy`, and `pgadmin` all running.
+
+4. **Check bot logs**:
+
+   ```bash
+   docker compose --env-file .env.docker.secret logs bot --tail 20
+   ```
+
+   Look for "Application started" and no Python tracebacks.
+
+### Verify Deployment
+
+1. **Backend health check**:
+
+   ```bash
+   curl -sf http://localhost:42002/docs
+   ```
+
+   Should return the Swagger UI HTML.
+
+2. **Test in Telegram**:
+   - Send `/start` — should receive welcome message
+   - Send `/health` — should show backend status
+   - Send "what labs are available?" — should list labs from LLM
+   - Send "which lab has the lowest pass rate?" — should show multi-step reasoning
+
+### Troubleshooting
+
+| Symptom | Solution |
+|---------|----------|
+| Bot container keeps restarting | Check logs: `docker compose logs bot`. Usually missing env var or import error. |
+| `/health` fails | Ensure `LMS_API_BASE_URL=http://backend:8000` (not localhost). |
+| LLM queries fail | Use `host.docker.internal:42005` for `LLM_API_BASE_URL`. |
+| "BOT_TOKEN is required" | Add `BOT_TOKEN` to `.env.docker.secret`. |
+| Build fails at `uv sync` | Ensure `uv.lock` is up to date: run `uv lock` locally and commit. |
